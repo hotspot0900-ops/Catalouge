@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" id="viewportMeta">
+    <title>Hotspot Mobile | Samsung Specialist | Mooi Rivier Mall</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css ">
+    <style>
+        :root {
+            --primary-blue: #003366;
+            --accent-blue: #007bff;
+            --bg-light: #f0f4f8;
+            --white: #ffffff;
+            --wa-green: #25D366;
+            --gold: #ffcc00;
+        }
+
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg-light); margin: 0; overflow-x: hidden; }
+        
+        .view-switcher {
+            position: absolute; top: 60px; right: 15px; z-index: 500;
+            background: rgba(0, 0, 0, 0.4); padding: 6px 12px; border-radius: 25px;
+            backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2);
+            display: flex; align-items: center;
+        }
+        .view-switcher select {
+            background: transparent; color: white; border: none; outline: none;
+            font-size: 0.85rem; cursor: pointer; font-weight: 600;
+        }
+        .view-switcher select option { color: black; }
+
+        header { 
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue)); 
+            color: white; padding: 3rem 1rem 5rem; text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); position: relative;
+        }
+
+        .brand-title {
+            font-size: 3.2rem; margin: 10px 0; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 4px;
+            background: linear-gradient(to bottom, #ffffff 0%, #e1e1e1 50%, #ffffff 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.4));
+            animation: gentleFloat 3s ease-in-out infinite;
+        }
+        @keyframes gentleFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+
+        .promo-banner {
+            background: var(--gold); color: black; padding: 10px 0;
+            font-weight: bold; text-align: center; overflow: hidden;
+            position: relative; z-index: 1000; display: flex;
+        }
+        .promo-text {
+            display: inline-block; white-space: nowrap; padding-left: 100%;
+            animation: marquee 25s linear infinite; font-size: 1rem;
+        }
+        @keyframes marquee { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
+
+        .header-content-wrapper {
+            display: flex; justify-content: center; max-width: 1200px;
+            margin: 30px auto 0; gap: 20px; flex-wrap: wrap;
+        }
+
+        .search-container { max-width: 500px; margin: 0 auto; position: relative; width: 100%; box-sizing: border-box; }
+        .search-container input {
+            width: 100%; padding: 15px 20px 15px 50px; border-radius: 50px;
+            border: none; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); outline: none;
+        }
+        .search-container i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--primary-blue); }
+
+        .request-form-container {
+            width: 320px; background: white; padding: 20px; border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: left;
+        }
+        .request-form-container h4 { margin-top: 0; color: var(--primary-blue); font-size: 0.9rem; margin-bottom: 10px; }
+        .request-form-container input { width: 100%; padding: 10px; margin: 5px 0; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
+        
+        .submit-req-btn {
+            background: var(--wa-green); color: white; border: none; padding: 10px;
+            border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
+
+        /* Enhanced Phone Card Styles with Animations */
+        .phone-card { 
+            background: var(--white); border-radius: 15px; padding: 20px; text-align: center; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); cursor: pointer; 
+            display: flex; flex-direction: column; justify-content: space-between;
+            position: relative; overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            animation: cardFadeInUp 0.6s ease forwards;
+        }
+
+        /* Staggered Animation Delay */
+        .phone-card:nth-child(1) { animation-delay: 0.05s; }
+        .phone-card:nth-child(2) { animation-delay: 0.1s; }
+        .phone-card:nth-child(3) { animation-delay: 0.15s; }
+        .phone-card:nth-child(4) { animation-delay: 0.2s; }
+        .phone-card:nth-child(5) { animation-delay: 0.25s; }
+        .phone-card:nth-child(6) { animation-delay: 0.3s; }
+        .phone-card:nth-child(7) { animation-delay: 0.35s; }
+        .phone-card:nth-child(8) { animation-delay: 0.4s; }
+        .phone-card:nth-child(9) { animation-delay: 0.45s; }
+        .phone-card:nth-child(10) { animation-delay: 0.5s; }
+        .phone-card:nth-child(n+11) { animation-delay: 0.55s; }
+
+        @keyframes cardFadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Hover Effects */
+        .phone-card:hover { 
+            transform: translateY(-8px) scale(1.02); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); 
+        }
+
+        /* Shine Effect */
+        .phone-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.4),
+                transparent
+            );
+            transition: left 0.5s;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .phone-card:hover::before {
+            left: 100%;
+        }
+
+        /* Active/Click Animation */
+        .phone-card:active {
+            transform: translateY(-4px) scale(0.98);
+            transition: transform 0.1s;
+        }
+
+        .network-badge {
+            position: absolute; top: 12px; right: 12px; padding: 4px 10px;
+            border-radius: 20px; font-size: 0.7rem; font-weight: 800; color: white;
+            z-index: 5;
+            transition: transform 0.3s ease;
+        }
+        .badge-5g { background: var(--accent-blue); }
+        .badge-4g { background: #6c757d; }
+        
+        .phone-card:hover .network-badge {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .condition-label {
+            position: absolute; top: 12px; left: 12px; background: #28a745;
+            color: white; font-size: 0.65rem; font-weight: bold; padding: 4px 8px;
+            border-radius: 4px; text-transform: uppercase;
+            z-index: 5;
+            transition: all 0.3s ease;
+        }
+
+        .phone-card:hover .condition-label {
+            background: #218838;
+            transform: translateX(3px);
+        }
+
+        /* Image Container with Zoom Effect */
+        .phone-card .img-container {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .phone-card img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .phone-card:hover img { 
+            transform: scale(1.1);
+        }
+
+        .warranty-tag { 
+            font-size: 0.75rem; 
+            color: #555; 
+            margin-bottom: 15px; 
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .phone-card:hover .warranty-tag {
+            color: var(--accent-blue);
+        }
+
+        /* Button Animation in Card */
+        .phone-card .view-btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .phone-card:hover .view-btn {
+            background: var(--accent-blue);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.4);
+        }
+
+        .phone-card .view-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .phone-card .view-btn:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Modal Animations */
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 2000; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.85); 
+            align-items: center; 
+            justify-content: center; 
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+        }
+        
+        .modal-content { 
+            background: white; 
+            padding: 25px; 
+            border-radius: 20px; 
+            max-width: 500px; 
+            width: 92%; 
+            position: relative; 
+            max-height: 90vh; 
+            overflow-y: auto; 
+            box-sizing: border-box;
+            transform: scale(0.8) translateY(50px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        .modal-back-btn { 
+            position: absolute; 
+            left: 20px; 
+            top: 15px; 
+            cursor: pointer; 
+            color: var(--primary-blue); 
+            font-weight: bold; 
+            display: flex; 
+            align-items: center; 
+            gap: 5px;
+            transition: transform 0.2s ease;
+        }
+
+        .modal-back-btn:hover {
+            transform: translateX(-5px);
+        }
+
+        .modal-phone-img { 
+            width: 100%; 
+            height: 250px; 
+            object-fit: contain; 
+            background: #f9f9f9; 
+            border-radius: 15px; 
+            padding: 15px; 
+            margin: 30px 0 10px; 
+            box-sizing: border-box;
+            transition: transform 0.3s ease;
+        }
+
+        .modal-phone-img:hover {
+            transform: scale(1.02);
+        }
+        
+        .spec-item { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 10px 0; 
+            border-bottom: 1px solid #eee; 
+            font-size: 0.85rem;
+            transition: background 0.2s ease;
+        }
+
+        .spec-item:hover {
+            background: rgba(0,123,255,0.05);
+            padding-left: 10px;
+            padding-right: 10px;
+            margin: 0 -10px;
+            border-radius: 5px;
+        }
+        
+        .spec-label { font-weight: bold; color: var(--primary-blue); flex: 1; }
+        .spec-value { flex: 2; text-align: right; color: #333; }
+        
+        .trust-section { 
+            display: flex; 
+            justify-content: space-around; 
+            margin: 20px 0; 
+            border-top: 1px dashed #ccc; 
+            padding-top: 20px; 
+        }
+        
+        .trust-badge { 
+            text-align: center; 
+            font-size: 0.7rem; 
+            color: #555;
+            transition: transform 0.3s ease;
+        }
+
+        .trust-badge:hover {
+            transform: translateY(-5px);
+        }
+        
+        .trust-badge i { 
+            display: block; 
+            font-size: 1.3rem; 
+            color: #28a745; 
+            margin-bottom: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .trust-badge:hover i {
+            transform: scale(1.2);
+        }
+
+        .wa-btn { 
+            background: var(--wa-green); 
+            color: white; 
+            text-decoration: none; 
+            padding: 15px; 
+            border-radius: 50px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+            font-weight: bold; 
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wa-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        .wa-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .wa-btn:hover::before {
+            left: 100%;
+        }
+
+        #backToTop { 
+            display: none; 
+            position: fixed; 
+            bottom: 85px; 
+            right: 20px; 
+            z-index: 99; 
+            background: var(--primary-blue); 
+            color: white; 
+            border: none; 
+            padding: 15px; 
+            border-radius: 50%; 
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        #backToTop:hover {
+            transform: translateY(-5px);
+            background: var(--accent-blue);
+        }
+
+        #backToTop.show {
+            display: block;
+            animation: bounceIn 0.5s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .floating-whatsapp { 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            z-index: 100; 
+            background: var(--wa-green); 
+            color: white; 
+            width: 60px; 
+            height: 60px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 30px; 
+            text-decoration: none; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        .floating-whatsapp:hover {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        /* Loading Skeleton Animation */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            body.mobile-mode .brand-title { font-size: 1.8rem; }
+            body.mobile-mode .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            body.mobile-mode .phone-card .img-container { height: 130px; }
+            .spec-item { flex-direction: column; text-align: left; }
+            .spec-value { text-align: left; margin-top: 2px; }
+            
+            /* Disable complex hover effects on touch devices */
+            .phone-card:hover {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+</head>
+<body class="mobile-mode">
+
+<div class="view-switcher">
+    <select id="modeSwitcher" onchange="toggleViewMode()">
+        <option value="mobile">Mobile View</option>
+        <option value="desktop">Desktop View</option>
+    </select>
+</div>
+
+<a href="https://wa.me/27845935657 " class="floating-whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<button onclick="scrollToTop()" id="backToTop"><i class="fas fa-arrow-up"></i></button>
+
+<div class="promo-banner">
+    <div class="promo-text">🛡️ 2-Year Official Warranty on All New Samsung Phones! | Special Discounts Available at Hotspot Mobile Mooi Rivier Mall 🔥</div>
+</div>
+
+<header>
+    <div class="brand-title">Hotspot Mobile</div>
+    <div style="margin-bottom: 25px; opacity: 0.9;">Samsung Specialist Store • Mooi Rivier Mall</div>
+    
+    <div class="search-container">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Search Model (e.g. S26, Z Fold, Z Flip...)" onkeyup="filterPhones()">
+    </div>
+
+    <div class="header-content-wrapper">
+        <div class="request-form-container">
+            <h4><i class="fas fa-mobile-alt"></i> Device Inquiry</h4>
+            <input type="text" id="custName" placeholder="Your Name">
+            <input type="text" id="custDevice" placeholder="Model Interested In">
+            <button class="submit-req-btn" onclick="sendCustomRequest()">WhatsApp Us</button>
+        </div>
+        <div class="request-form-container">
+            <h4><i class="fas fa-tools"></i> Repair Service</h4>
+            <input type="text" id="repairModel" placeholder="Phone Model">
+            <input type="text" id="repairFault" placeholder="Fault (e.g. Broken Screen)">
+            <button class="submit-req-btn" style="background:#d9534f" onclick="sendRepairRequest()">Repair Quote</button>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="grid" id="phoneGrid"></div>
+</div>
+
+<div id="detailsModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-back-btn" onclick="closeModal()">
+            <i class="fas fa-arrow-left"></i> Back
+        </div>
+        <span style="position:absolute; right:20px; top:15px; cursor:pointer; font-size:25px;" onclick="closeModal()">&times;</span>
+        <img id="m-img" class="modal-phone-img" src="" alt="">
+        <h2 id="m-name" style="color: var(--primary-blue); margin: 10px 0; text-align: center;"></h2>
+        <div id="m-specs"></div>
+        <div class="trust-section">
+            <div class="trust-badge"><i class="fas fa-shield-check"></i> 2yr Warranty</div>
+            <div class="trust-badge"><i class="fas fa-box"></i> Brand New</div>
+            <div class="trust-badge"><i class="fas fa-certificate"></i> Original</div>
+        </div>
+        <a id="m-wa" href="#" class="wa-btn"><i class="fab fa-whatsapp"></i> Inquiry Price via WhatsApp</a>
+    </div>
+</div>
+
+<script>
+    const waNumber = "27845935657";
+    const phones = [
+        // ==================== S26 SERIES (TOP PRIORITY) ====================
+        { name: "Galaxy S26 Ultra", display: "6.9\" QHD+ AMOLED 120Hz", cam: "200MP Quad + AI", bat: "5500mAh", store: "256GB/512GB/1TB", sim: "Nano + eSIM", net: "5G", colors: "Titanium Black, Silver, Blue", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJ8cKoseKbF6jSwY1wfNiCWG_eXk8gc93JoA&s" },
+        { name: "Galaxy S26 Plus", display: "6.7\" QHD+ AMOLED 120Hz", cam: "50MP Triple + AI", bat: "5200mAh", store: "256GB/512GB", sim: "Nano + eSIM", net: "5G", colors: "Navy, Silver, Mint", img: "https://www.incredible.co.za/api/catalog/product/s/m/sm_s947_galaxys26plus_front_black_251128_ecommerce_c243.png?width=700&height=700&store=incredibleconnection&image-type=image" },
+        { name: "Galaxy S26", display: "6.2\" FHD+ AMOLED 120Hz", cam: "50MP Triple + AI", bat: "4200mAh", store: "128GB/256GB", sim: "Nano + eSIM", net: "5G", colors: "Silver, Black, Pink", img: "https://www.incredible.co.za/api/catalog/product/s/m/sm_s942_galaxys26_front_cobaltviolet_251128_ecommerce_58e4.png?width=700&height=700&store=incredibleconnection&image-type=image" },
+        
+        // ==================== S25 SERIES ====================
+        { name: "Galaxy S25 Ultra", display: "6.9\" QHD+ AMOLED 120Hz", cam: "200MP Quad", bat: "5000mAh", store: "256GB/512GB", sim: "Nano + eSIM", net: "5G", colors: "Titanium Silver, Black", img: "https://images.samsung.com/is/image/samsung/p6pim/za/2501/gallery/za-galaxy-s25-s938-sm-s938bzbiafa-544712281 " },
+        { name: "Galaxy S25 Plus", display: "6.7\" QHD+ AMOLED", cam: "50MP Triple", bat: "4900mAh", store: "256GB", sim: "Nano + eSIM", net: "5G", colors: "Navy, Silver", img: "https://cellucity.co.za/wp-content/uploads/2025/02/Samsung-Galaxy-S25-Plus-Navy.jpg " },
+        { name: "Galaxy S25", display: "6.2\" FHD+ AMOLED", cam: "50MP Triple", bat: "4000mAh", store: "128GB/256GB", sim: "Nano + eSIM", net: "5G", colors: "Silver, Mint", img: "https://cellucity.co.za/wp-content/uploads/2025/02/Samsung-Galaxy-S25-Silver.jpg " },
+        { name: "Galaxy S25 FE", display: "6.4\" FHD+ AMOLED", cam: "50MP Triple", bat: "4500mAh", store: "128GB", sim: "Dual Nano", net: "5G", colors: "White, Graphite", img: "https://cellucity.co.za/wp-content/uploads/2025/09/Samsung-Galaxy-S25-FE-White-300x300.jpg " },
+        { name: "Galaxy S25 EDGE", display: "6.7\" Edge Display", cam: "50MP Triple", bat: "4700mAh", store: "256GB", sim: "Nano + eSIM", net: "5G", colors: "Black", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpo2iozwqY5G0gw7Osifaf4G9-s-THwYdI6g&s " },
+        
+        // ==================== S24 SERIES ====================
+        { name: "Galaxy S24 Ultra", display: "6.8\" QHD+ AMOLED", cam: "200MP Quad", bat: "5000mAh", store: "256GB/512GB", sim: "Nano + eSIM", net: "5G", colors: "Titanium Gray", img: "https://justcelit.co.za/wp-content/uploads/2024/08/s24-Ultra-500-x-500.png " },
+        { name: "Galaxy S24 Plus", display: "6.7\" AMOLED", cam: "50MP Triple", bat: "4900mAh", store: "256GB", sim: "Nano + eSIM", net: "5G", colors: "Black", img: "https://http2.mlstatic.com/D_NQ_NP_735140-MLA76489603841_052024-O.webp " },
+        { name: "Galaxy S24", display: "6.2\" AMOLED", cam: "50MP Triple", bat: "4000mAh", store: "128GB", sim: "Nano + eSIM", net: "5G", colors: "Gray", img: "https://bsimg.nl/images/samsung-galaxy-s24-256gb-s921-zilver-eu_9.png/rixvd9fiwXeHhg5-wOZHH3Q-YSk%3D/fit-in/0x0/filters%3Aupscale%28%29 " },
+        
+        // ==================== S23 SERIES ====================
+        { name: "Galaxy S23 Ultra", display: "6.8\" AMOLED", cam: "200MP Quad", bat: "5000mAh", store: "256GB", sim: "Nano + eSIM", net: "5G", colors: "Green", img: "https://cellularinc.co.za/wp-content/uploads/2024/01/Samsung-Galaxy-S23-Ultra-600x600.png " },
+        { name: "Galaxy S23 Plus", display: "6.6\" AMOLED", cam: "50MP Triple", bat: "4700mAh", store: "256GB", sim: "Nano + eSIM", net: "5G", colors: "Lavender", img: "https://epicdeals.co.za/wp-content/uploads/2025/03/samsung-galaxy-s23-plus-5g-512gb-dual-sim-green-cpo--300x300.png " },
+        { name: "Galaxy S23", display: "6.1\" AMOLED", cam: "50MP Triple", bat: "3900mAh", store: "128GB", sim: "Nano + eSIM", net: "5G", colors: "Black", img: "https://i0.wp.com/supercells.co.za/wp-content/uploads/2024/05/s23.jpg?fit=800%2C800&ssl=1 " },
+        
+        // ==================== S22 SERIES ====================
+        { name: "Galaxy S22 Ultra", display: "6.8\" AMOLED", cam: "108MP Quad", bat: "5000mAh", store: "256GB", sim: "Dual SIM", net: "5G", colors: "Burgundy", img: "https://m.media-amazon.com/images/I/51AV0vHvi5L._AC_SY355_.jpg " },
+        
+        // ==================== A SERIES ====================
+        { name: "Galaxy A56 5G", display: "6.7\" Super AMOLED", cam: "50MP Triple", bat: "5000mAh", store: "128GB/256GB", sim: "Nano + eSIM", net: "5G", colors: "Black, Gray", img: "https://images.telkom.co.za/640/backend-files/Samsung_Galaxy_A56_Awesome_Black_slide.webp " },
+        { name: "Galaxy A36 5G", display: "6.6\" Super AMOLED", cam: "50MP Triple", bat: "5000mAh", store: "128GB", sim: "Dual SIM", net: "5G", colors: "Black", img: "https://www.technomobi.co.za/media/catalog/product/cache/e2a07cde3e161746aa285b73c334c4ba/1/0/104075900_a2a7e74c30318427e09a67e29f8611d1.png " },
+        { name: "Galaxy A26 5G", display: "6.5\" Super AMOLED", cam: "50MP Triple", bat: "5000mAh", store: "128GB", sim: "Dual SIM", net: "5G", colors: "Mint", img: "https://images.telkom.co.za/640/backend-files/Samsung_Galaxy_A26_Awesome_Black_slide.webp " },
+        { name: "Galaxy A25", display: "6.5\" AMOLED 120Hz", cam: "50MP Triple", bat: "5000mAh", store: "128GB", sim: "Dual SIM", net: "5G", colors: "Yellow, Blue", img: "https://media.loot.co.za/images/x400/2399105281707179215.jpg " },
+        { name: "Galaxy A24", display: "6.5\" Super AMOLED", cam: "50MP Triple", bat: "5000mAh", store: "128GB", sim: "Dual SIM", net: "4G", colors: "Black", img: "https://m.media-amazon.com/images/I/71Qw85xhy+L._AC_SY355_.jpg " },
+        { name: "Galaxy A16", display: "6.7\" Super AMOLED", cam: "50MP Triple", bat: "5000mAh", store: "128GB", sim: "Dual SIM", net: "5G", colors: "Gray", img: "https://www.edgars.co.za/cdn/shop/files/104_5c135b14-fc79-4767-9516-31a3f246f0d3.jpg?v=1734073736&width=720 " },
+        { name: "Galaxy A15", display: "6.5\" Super AMOLED", cam: "50MP Triple", bat: "5000mAh", store: "128GB", sim: "Dual SIM", net: "4G/5G", colors: "Blue", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_HMBjVaJq5R6_V-liNiyJM2sAqvdZSWTCew&s " },
+        { name: "Galaxy A14", display: "6.6\" FHD+ LCD", cam: "50MP Triple", bat: "5000mAh", store: "64GB", sim: "Dual SIM", net: "4G", colors: "Silver", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcrJKSSmqL-WUNcegIYKIwW9ZB24K3TaWrcQ&s " },
+        { name: "Galaxy A06", display: "6.7\" HD+ LCD", cam: "50MP Dual", bat: "5000mAh", store: "64GB/128GB", sim: "Dual SIM", net: "4G", colors: "Gold, Black", img: "https://m.media-amazon.com/images/I/61asGlxdMOL._AC_SY355_.jpg " },
+        { name: "Galaxy A05", display: "6.7\" HD+ LCD", cam: "50MP Dual", bat: "5000mAh", store: "64GB", sim: "Dual SIM", net: "4G", colors: "Silver", img: "https://m.media-amazon.com/images/I/616ImUvUjfL._AC_SY300_SX300_QL70_ML2_.jpg " },
+        { name: "Galaxy A04", display: "6.5\" HD+ LCD", cam: "50MP Dual", bat: "5000mAh", store: "32GB/64GB", sim: "Dual SIM", net: "4G", colors: "Black", img: "https://img.global.news.samsung.com/za/wp-content/uploads/2023/01/SM-A045_Galaxy-A04_Black_Front-and-back-Decal.jpg " },
+        
+        // ==================== Z FOLD SERIES (LAST) ====================
+        { name: "Galaxy Z Fold 7", display: "7.6\" QXGA+ AMOLED 120Hz (Inner) + 6.2\" HD+ (Cover)", cam: "50MP Triple + Under Display", bat: "4400mAh", store: "256GB/512GB/1TB", sim: "Nano + eSIM", net: "5G", colors: "Phantom Black, Navy, Silver", img: "https://bsimg.nl/images/samsung-galaxy-z-fold-7-256gb-donkerblauw-eu_2.png/DIF1XIK_uxD4QcsFK70C5KGusHQ%3D/fit-in/257x400/filters%3Aformat%28png%29%3Aupscale%28%29" },
+        { name: "Galaxy Z Fold 6", display: "7.6\" QXGA+ AMOLED 120Hz (Inner) + 6.2\" HD+ (Cover)", cam: "50MP Triple", bat: "4400mAh", store: "256GB/512GB/1TB", sim: "Nano + eSIM", net: "5G", colors: "Navy, Silver, Pink", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRqMFK75E9qI2TzeWQsXwAVNgCIHViRNhkZqmMUjsUhg&s" },
+        { name: "Galaxy Z Fold 5", display: "7.6\" QXGA+ AMOLED 120Hz (Inner) + 6.2\" HD+ (Cover)", cam: "50MP Triple", bat: "4400mAh", store: "256GB/512GB/1TB", sim: "Nano + eSIM", net: "5G", colors: "Phantom Black, Cream, Icy Blue", img: "https://coolcart.co.za/cdn/shop/files/SM-Galaxy-Z-Fold-5-Qmart-5_dfe4cb9b-b0a0-4cdf-9ff7-baed77dd40da_1000x.jpg?v=1706122544" },
+        { name: "Galaxy Z Fold 4", display: "7.6\" QXGA+ AMOLED 120Hz (Inner) + 6.2\" HD+ (Cover)", cam: "50MP Triple", bat: "4400mAh", store: "256GB/512GB/1TB", sim: "Nano + eSIM", net: "5G", colors: "Graygreen, Phantom Black, Beige", img: "https://fonezone.me/cdn/shop/files/Untitled_3_e13e2379-9149-4c59-aadb-5f58de252921.jpg?v=1725289934" },
+        
+        // ==================== Z FLIP SERIES (LAST) ====================
+        { name: "Galaxy Z Flip 7", display: "6.7\" FHD+ AMOLED 120Hz (Inner) + 3.4\" (Cover)", cam: "50MP Dual + AI", bat: "4000mAh", store: "256GB/512GB", sim: "Nano + eSIM", net: "5G", colors: "Graphite, Yellow, Mint, Blue", img: "https://images.samsung.com/is/image/samsung/p6pim/za/feature/166387872/za-feature-smartphones-548199587?$FB_TYPE_I_JPG$" },
+        { name: "Galaxy Z Flip 6", display: "6.7\" FHD+ AMOLED 120Hz (Inner) + 3.4\" (Cover)", cam: "50MP Dual", bat: "4000mAh", store: "256GB/512GB", sim: "Nano + eSIM", net: "5G", colors: "Silver, Yellow, Blue, Peach", img: "https://www.dateks.lv/images/pic/2400/2400/391/1771.jpg" },
+        { name: "Galaxy Z Flip 5", display: "6.7\" FHD+ AMOLED 120Hz (Inner) + 3.4\" (Cover)", cam: "12MP Dual", bat: "3700mAh", store: "256GB/512GB", sim: "Nano + eSIM", net: "5G", colors: "Graphite, Cream, Lavender, Mint", img: "https://cellucity.co.za/wp-content/uploads/2024/11/Samsung-Galaxy-Z-flip5-in-Black.webp" },
+        { name: "Galaxy Z Flip 4", display: "6.7\" FHD+ AMOLED 120Hz (Inner) + 1.9\" (Cover)", cam: "12MP Dual", bat: "3700mAh", store: "128GB/256GB", sim: "Nano + eSIM", net: "5G", colors: "Bora Purple, Graphite, Pink Gold, Blue", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-aP8zP3q7Fo3UcjLDEFL_Cq69Aox2-__ZzQ&s" }
+    ];
+
+    function renderPhones(list) {
+        const grid = document.getElementById('phoneGrid');
+        grid.innerHTML = '';
+        list.forEach((p, index) => {
+            const card = document.createElement('div');
+            card.className = 'phone-card';
+            card.style.animationDelay = `${index * 0.05}s`;
+            const badgeClass = p.net.includes('5G') ? 'badge-5g' : 'badge-4g';
+            card.innerHTML = `
+                <div class="condition-label">New</div>
+                <div class="network-badge ${badgeClass}">${p.net}</div>
+                <div class="img-container">
+                    <img src="${p.img}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/200x180?text=Samsung '">
+                </div>
+                <h3 style="margin-bottom:5px; transition: color 0.3s ease;">${p.name}</h3>
+                <div class="warranty-tag">2-Year Official Warranty</div>
+                <button class="view-btn">View Details</button>
+            `;
+            card.onclick = () => showDetails(p);
+            grid.appendChild(card);
+        });
+    }
+
+    function showDetails(p) {
+        document.getElementById('m-img').src = p.img;
+        document.getElementById('m-name').innerText = p.name;
+        document.getElementById('m-specs').innerHTML = `
+            <div class="spec-item"><span class="spec-label">Condition</span><span class="spec-value" style="color:#28a745; font-weight:bold;">Brand New</span></div>
+            <div class="spec-item"><span class="spec-label">Warranty</span><span class="spec-value" style="color:var(--accent-blue); font-weight:bold;">2-Year Official Warranty</span></div>
+            <div class="spec-item"><span class="spec-label">Network</span><span class="spec-value">${p.net}</span></div>
+            <div class="spec-item"><span class="spec-label">Display</span><span class="spec-value">${p.display}</span></div>
+            <div class="spec-item"><span class="spec-label">Camera</span><span class="spec-value">${p.cam}</span></div>
+            <div class="spec-item"><span class="spec-label">Battery</span><span class="spec-value">${p.bat}</span></div>
+            <div class="spec-item"><span class="spec-label">Storage</span><span class="spec-value">${p.store}</span></div>
+            <div class="spec-item"><span class="spec-label">SIM Type</span><span class="spec-value">${p.sim}</span></div>
+            <div class="spec-item"><span class="spec-label">Available Colors</span><span class="spec-value">${p.colors}</span></div>
+        `;
+        document.getElementById('m-wa').href = `https://wa.me/ ${waNumber}?text=Hi Hotspot Mobile! I'm interested in the Brand New ${p.name} with 2-Year Warranty. Please let me know the price.`;
+        
+        const modal = document.getElementById('detailsModal');
+        modal.style.display = 'flex';
+        // Trigger reflow for animation
+        void modal.offsetWidth;
+        modal.classList.add('show');
+        
+        history.pushState({modal: true}, '');
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('detailsModal');
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+        if(history.state && history.state.modal) history.back();
+    }
+
+    window.onpopstate = () => {
+        const modal = document.getElementById('detailsModal');
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+    };
+
+    function filterPhones() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        renderPhones(phones.filter(p => p.name.toLowerCase().includes(q)));
+    }
+
+    function toggleViewMode() {
+        const mode = document.getElementById('modeSwitcher').value;
+        const body = document.body;
+        const vp = document.getElementById('viewportMeta');
+        if(mode === 'desktop') { body.classList.remove('mobile-mode'); vp.content = "width=1200"; }
+        else { body.classList.add('mobile-mode'); vp.content = "width=device-width, initial-scale=1"; }
+    }
+
+    function sendCustomRequest() {
+        const n = document.getElementById('custName').value;
+        const d = document.getElementById('custDevice').value;
+        if(!n || !d) return alert("Please fill details.");
+        window.open(`https://wa.me/ ${waNumber}?text=Hi, I am ${n}. Inquiry for ${d}.`, '_blank');
+    }
+
+    function sendRepairRequest() {
+        const m = document.getElementById('repairModel').value;
+        const f = document.getElementById('repairFault').value;
+        if(!m || !f) return alert("Fill repair details");
+        window.open(`https://wa.me/ ${waNumber}?text=Repair Request: ${m}, Fault: ${f}`, '_blank');
+    }
+
+    window.onscroll = () => { 
+        const btn = document.getElementById('backToTop');
+        if (window.scrollY > 400) {
+            btn.classList.add('show');
+        } else {
+            btn.classList.remove('show');
+        }
+    };
+    
+    function scrollToTop() { 
+        window.scrollTo({top:0, behavior:'smooth'}); 
+    }
+
+    renderPhones(phones);
+</script>
+</body>
+</html>
